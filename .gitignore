@@ -1,0 +1,26 @@
+
+manage.py
+*.sqlite3
+*.sqlite3-journal
+
+
+/venv
+
+# Игнорируем кэш Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+.vscode/
+
+# Игнорируем файлы журналов и дампы
+*.log
+*.pot
+*.pyc
+*.pid
+
+# Игнорируем файлы кэша и тестов
+.coverage
+htmlcov/
+.pytest_cache/

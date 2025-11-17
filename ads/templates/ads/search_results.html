@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Результаты поиска</h1>
+
+<form method="get" class="mb-4">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <input type="text" name="q" class="form-control" placeholder="Поиск..." value="{{ request.GET.q }}">
+        </div>
+        <div class="col-md-3">
+            <select name="category" class="form-select">
+                <option value="">Все категории</option>
+                {% for cat in categories %}
+                <option value="{{ cat.0 }}" {% if request.GET.category == cat.0 %}selected{% endif %}>{{ cat.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="condition" class="form-select">
+                <option value="">Любое состояние</option>
+                {% for cond in conditions %}
+                <option value="{{ cond.0 }}" {% if request.GET.condition == cond.0 %}selected{% endif %}>{{ cond.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Применить</button>
+        </div>
+    </div>
+</form>
+
+<!-- Вывод результатов как в list.html -->
+<!-- {% include 'ads/_ad_list.html' with ads=page_obj %} -->
+
+{% endblock %}

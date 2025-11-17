@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+  <div class="col-md-8">
+    <h1>{% if search_query %}Результаты поиска "{{ search_query }}"{% else %}Все объявления{% endif %}</h1>
+  </div>
+  <div class="col-md-4">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown">
+        Фильтры
+      </button>
+      <div class="dropdown-menu p-3" style="width: 300px;">
+        <form method="get" action="{% url 'ads:search' %}">
+          <input type="hidden" name="q" value="{{ search_query }}">
+          <div class="mb-3">
+            <label class="form-label">Категория</label>
+            <select name="category" class="form-select">
+              <option value="">Все категории</option>
+              {% for value, name in categories %}
+                <option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>{{ name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Состояние</label>
+            <select name="condition" class="form-select">
+              <option value="">Любое состояние</option>
+              {% for value, name in conditions %}
+                <option value="{{ value }}" {% if request.GET.condition == value %}selected{% endif %}>{{ name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Применить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Остальной код списка объявлений -->
+<div class="row">
+  {% for ad in ads %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        {% if ad.image_url %}
+          <img src="{{ ad.image_url }}" class="card-img-top" alt="{{ ad.title }}" style="height: 200px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ ad.title }}</h5>
+          <p class="card-text">{{ ad.description|truncatechars:100 }}</p>
+          <span class="badge bg-secondary">{{ ad.get_category_display }}</span>
+          <span class="badge bg-info text-dark">{{ ad.get_condition_display }}</span>
+        </div>
+        <div class="card-footer">
+          <a href="{% url 'ads:detail' ad.id %}" class="btn btn-primary">Подробнее</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12">
+      <div class="alert alert-info">Объявления не найдены</div>
+    </div>
+  {% endfor %}
+</div>
+
+{% include 'includes/pagination.html' %}
+{% endblock %}

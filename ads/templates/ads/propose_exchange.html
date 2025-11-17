@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Предложить обмен</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="sender_ad_id" value="{{ request.GET.sender_ad_id }}">
+        <button type="submit" class="btn btn-success">Отправить</button>
+    </form>
+</div>
+{% endblock %}
